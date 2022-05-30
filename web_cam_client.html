@@ -1,0 +1,35 @@
+<html>
+    <head>
+    </head>
+    <body>
+        <img id=display height="720" width="1280">
+        <script>
+            const URL = "ws://192.168.178.82:8000/ws";
+            var socket = new WebSocket(URL);
+            socket.onopen = function(e) {
+                console.log("[open] Connection established");
+            };
+
+            socket.onmessage = function(event) {
+                console.log("[message] Data received from server:");
+
+                const img = event.data;
+
+                document.getElementById("display").setAttribute('src', "data:image/jpeg;base64, " + img)
+                console.log("size= "+ arrayBuffer.length);
+            };
+
+            socket.onclose = function(event) {
+                if (event.wasClean) {
+                    console.log("[close] Connection closed cleanly, code=${event.code} reason=${event.reason}");
+                } else {
+                    console.log("[close] Connection died");
+                }
+            };
+
+            socket.onerror = function(error) {
+                console.log(`[error] ${error.message}`);
+            };
+        </script>
+    </body>
+</html>
